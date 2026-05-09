@@ -1,2 +1,2 @@
-﻿Date,Breed + Health Dog DNA Test,Breed + Health Test 2-Pack,lowest price of the day
-10-May-26,$129 ,$255 ,$127.50 
+﻿Date,Breed + Health Dog DNA Test,Breed + Health Test 2-Pack,lowest price of the day,price <=$119
+10-May-26,$129 ,$255 ,$127.50 , false

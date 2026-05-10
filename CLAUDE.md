@@ -24,7 +24,7 @@ git remote set-url origin https://$GITHUB_TOKEN@github.com/ken-ck-yu/embark-pric
 2. Record prices in `embark_price_tracker.csv` by appending a new row.
 3. Calculate the **lowest price of the day**: the lower of (single kit price) vs (2-pack price ÷ 2).
 4. Set **price ≤$119** to `true` if either the single price OR the 2-pack per-kit price is ≤ $119, otherwise `false`.
-5. Commit and push to branch `claude/funny-tesla-KTUgr`.
+5. Commit and push directly to `main`.
 
 ### CSV format
 ```
@@ -33,4 +33,4 @@ Date,Breed + Health Dog DNA Test,Breed + Health Test 2-Pack,lowest price of the 
 ```
 - Date format: `DD-Mon-YY` (e.g. `10-May-26`)
 - Prices include `$` sign
-- Branch: `claude/funny-tesla-KTUgr`
+- Branch: `main`

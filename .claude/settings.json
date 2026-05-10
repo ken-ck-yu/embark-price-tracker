@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if [ -n \"$GITHUB_TOKEN\" ]; then git remote set-url origin https://$GITHUB_TOKEN@github.com/ken-ck-yu/embark-price-tracker.git; fi"
+            "command": "if [ -n \"$GITHUB_TOKEN\" ]; then git remote set-url origin https://$GITHUB_TOKEN@github.com/ken-ck-yu/embark-price-tracker.git; git checkout main 2>/dev/null || true; fi"
           }
         ]
       }

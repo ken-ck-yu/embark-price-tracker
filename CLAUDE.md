@@ -29,8 +29,9 @@ git remote set-url origin https://$GITHUB_TOKEN@github.com/ken-ck-yu/embark-pric
 ### CSV format
 ```
 Date,Breed + Health Dog DNA Test,Breed + Health Test 2-Pack,lowest price of the day,price <=$119
-10-May-26,$129 ,$255 ,$127.50 , false
+10-May-26,00:35,$129 ,$255 ,$127.50 , false
 ```
 - Date format: `DD-Mon-YY` (e.g. `10-May-26`)
+- Time 24 hours format hours:minute
 - Prices include `$` sign
 - Branch: `main`

@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -n \"$GITHUB_TOKEN\" ]; then git remote set-url origin https://$GITHUB_TOKEN@github.com/ken-ck-yu/embark-price-tracker.git; fi"
+          }
+        ]
+      }
+    ]
+  }
+}

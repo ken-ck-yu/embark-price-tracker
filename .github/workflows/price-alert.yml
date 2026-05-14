@@ -2,8 +2,8 @@ name: Price Alert Check
 
 on:
   schedule:
-    - cron: '0 9 * * *'  # 09:00 UTC daily (≈10AM London time)
-  workflow_dispatch:  # Allow manual trigger
+    - cron: '0 9 * * *'
+  workflow_dispatch:
 
 jobs:
   check-price:
@@ -16,10 +16,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Read the last line of CSV (latest entry)
           LATEST=$(tail -n 1 embark_price_tracker.csv)
 
-          # Extract fields (accounting for spaces around values)
           DATE=$(echo "$LATEST" | cut -d',' -f1)
           TIME=$(echo "$LATEST" | cut -d',' -f2)
           SINGLE_PRICE=$(echo "$LATEST" | cut -d',' -f3 | xargs)
@@ -27,35 +25,32 @@ jobs:
           LOWEST_PRICE=$(echo "$LATEST" | cut -d',' -f5 | xargs)
           PRICE_ALERT=$(echo "$LATEST" | cut -d',' -f6 | xargs)
 
-          echo "Latest entry - Date: $DATE, Price Alert: $PRICE_ALERT"
+          echo "Price Alert field: $PRICE_ALERT"
 
-          # Create issue only if price alert is true
           if [ "$PRICE_ALERT" = "true" ]; then
-            # Check if an issue was already created today (avoid duplicates)
             TODAY=$(date +%Y-%m-%d)
             EXISTING=$(gh issue list --label "price-alert" --state open --search "created:>=$TODAY" --json number --jq 'length' || echo "0")
 
             if [ "$EXISTING" -eq 0 ]; then
+              {
+                echo "The Embark DNA test kit price has dropped to USD 119 or below!"
+                echo ""
+                echo "Date: $DATE"
+                echo "Time (London): $TIME"
+                echo "Single Kit Price: $SINGLE_PRICE"
+                echo "2-Pack Price: $PACK_PRICE"
+                echo "Lowest Price of the day: $LOWEST_PRICE"
+                echo ""
+                echo "Shop: https://shop.embarkvet.com/products/breed-and-health-dog-dna-test-kit"
+              } > /tmp/issue_body.md
+
               gh issue create \
-                --title "🚨 Price Alert: Embark price ≤ \$119!" \
-                --body "$(cat <<'BODY_EOF'
-**Great news!** The Embark DNA test kit price has dropped to ≤$119!
-
-**Latest Price Check:**
-- **Date:** $DATE
-- **Time (London):** $TIME
-- **Single Kit Price:** $SINGLE_PRICE
-- **2-Pack Price:** $PACK_PRICE
-- **Lowest Price (of the day):** $LOWEST_PRICE
-
-👉 [Shop Embark DNA Test](https://shop.embarkvet.com/products/breed-and-health-dog-dna-test-kit)
-BODY_EOF
-)" \
+                --title "Price Alert: Embark at USD 119 or below!" \
+                --body-file /tmp/issue_body.md \
                 --label "price-alert"
-              echo "✅ Alert issue created!"
             else
-              echo "ℹ️ Issue already created today, skipping."
+              echo "Issue already created today, skipping."
             fi
           else
-            echo "ℹ️ Price is above \$119, no alert needed."
+            echo "Price above USD 119, no alert needed."
           fi

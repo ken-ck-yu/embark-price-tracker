@@ -36,9 +36,7 @@ jobs:
             EXISTING=$(gh issue list --label "price-alert" --state open --search "created:>=$TODAY" --json number --jq 'length' || echo "0")
 
             if [ "$EXISTING" -eq 0 ]; then
-              gh issue create \
-                --title "🚨 Price Alert: Embark price ≤ \$119!" \
-                --body "**Great news!** The Embark DNA test kit price has dropped to ≤\$119!
+              BODY="**Great news!** The Embark DNA test kit price has dropped to ≤\$119!
 
 **Latest Price Check:**
 - **Date:** $DATE
@@ -47,7 +45,11 @@ jobs:
 - **2-Pack Price:** $PACK_PRICE
 - **Lowest Price (of the day):** $LOWEST_PRICE
 
-👉 [Shop Embark DNA Test](https://shop.embarkvet.com/products/breed-and-health-dog-dna-test-kit)" \
+👉 [Shop Embark DNA Test](https://shop.embarkvet.com/products/breed-and-health-dog-dna-test-kit)"
+
+              gh issue create \
+                --title "🚨 Price Alert: Embark price ≤ \$119!" \
+                --body "$BODY" \
                 --label "price-alert"
               echo "✅ Alert issue created!"
             else
